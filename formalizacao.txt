@@ -1,0 +1,35 @@
+TDE 2 - Programação Distribuída PUCPR
+Item 2: Formalização do Eco
+Grupo: Adryan Costa Silva, Hassan Ali El Gazouini, Hussein Ali El Gazouini, Murilo Zimerman Fortaleza
+
+Estados = {INICIADOR, OCIOSO, ATIVO, OK}
+	S_inicial = {INICIADOR, OCIOSO}
+	S_final = {OK}
+Restrições = {R união {UI}}
+
+Iniciador
+	Espontaneamente:
+		estado = ATIVO
+		entrada = ()
+		aguardando = N(x)
+		envia <EXPLORAR> a N(x)
+
+Ocioso
+	Recebendo <EXPLORAR> de origem:
+		processa <EXPLORAR>
+		estado = ATIVO
+		entrada = origem
+		aguardando = N(x) - {origem}
+		envia <EXPLORAR> a N(x) - {origem}
+	Se não tiver vizinhos além da origem:
+		processa <EXPLORAR>
+		envia <ECO> a origem
+	Recebendo <ECO> de origem:
+		remove origem de aguardando
+		envia <ECO> a entrada
+	
+ATIVO (Iniciador)
+	Recebendo <ECO> de origem:
+		remove origem de aguardando
+		se aguardando = ():
+			estado = <OK>
